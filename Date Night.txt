@@ -1,0 +1,99 @@
+% Date Night
+% Five couples are next to each other on a date night. 
+% Each couple is at a table that has a flower and they are eating pasta and drinking wine. 
+% Follow the clues to find out which wine they are drinking and which pasta they are eating.
+
+/* 
+	1. The couple drinking French wine is exactly to the left of the 
+    	couple who has been dating for 3 years.
+	2. At one of the ends is the table that has the Red flower.
+	3. Laura is exactly to the left of the couple who is eating Rigatoni.
+	4. Daniel is exactly to the right of the couple drinking Italian wine.
+	5. Donna is sitting somewhere between the couple that has been dating 
+    	for 6 years and Ann, in that order.
+	6. Laura is exactly to the right of the couple eating Spaghetti.
+	7. The White flower's table is somewhere to the left of the couple 
+    	that is eating Fettuccine.
+	8. Barry is somewhere between the table that has the Pink flower 
+    	and Andrew, in that order.
+	9. At one of the ends is the couple that has been dating for 2 years.
+	10. Rose and his boyfriend are eating Rigatoni.
+	11. Andrew is next to the couple who has been dating for 5 years.
+	12. The table that has the White flower is somewhere to the left of 
+    	the couple drinking Spanish wine.
+	13. The couples eating Spaghetti and Fettuccine are next to each other.
+	14. At the second position is the couple eating Lasagne.
+	15. The couple that has been dating for 6 years is at the table that 
+    	has the Pink flower.
+	16. Scott's table is somewhere to the right of the table that has the 
+    	Purple flower.
+	17. The couple eating Rigatoni is at one of the ends.
+	18. The couple that has been dating for 4 years is next to the table 
+    	that has the Pink flower.
+	19. The couple drinking Spanish wine is somewhere between Kristen and 
+    	the couple drinking Chilean wine, in that order.
+	20. The couple drinking Italian wine is somewhere to the left of the 
+    	couple that has been dating for 3 years.
+	21. Laura is exactly to the left of the couple drinking Argentine wine.
+*/
+
+:- use_rendering(table, [header(couple('Flower', 'Boyfriend', 'Girlfriend', 'Relationship', 
+                                'Pasta', 'Wine'))]).
+
+
+
+nextToLeft(A, B, Ls):- append(_, [A, B|_], Ls).
+
+nextTo(A, B, Ls):- append(_, [A, B|_], Ls).
+nextTo(A, B, Ls):- append(_, [B, A|_], Ls).
+
+atAnyEnd(A, Ls):- Ls = [A|_].
+atAnyEnd(A, Ls):- Ls = [_, _, _, _, A].
+
+somewhereLeft(A, B, Ls):- append(_, [A, B|_], Ls).
+somewhereLeft(A, B, Ls):- append(_, [A, _, B|_], Ls).
+somewhereLeft(A, B, Ls):- append(_, [A, _, _, B|_], Ls).
+somewhereLeft(A, B, Ls):- append(_, [A, _, _, _, B|_], Ls).
+
+somewhereBetween(A, B, C, Ls):- 
+   somewhereLeft(A, B, Ls),
+    somewhereLeft(B, C, Ls).
+
+% couple(Flower, Boyfriend, Girlfriend, Relationship, Pasta, Wine)
+couples(Couples):-
+    length(Couples, 5),
+    nextToLeft(couple(_, _, _, _, _, french), couple(_, _, _, 3, _, _), Couples), % 1
+    atAnyEnd(couple(red, _, _, _, _, _), Couples), % 2
+    nextToLeft(couple(_, _, laura, _, _, _), couple(_, _, _, _, rigatoni, _), Couples), % 3
+    nextToLeft(couple(_, _, _, _, _, italian), couple(_, daniel, _, _, _, _), Couples), % 4
+    somewhereBetween(couple(_, _, _, 6, _, _), couple(_, _, donna, _, _, _), couple(_, _, ann, _, _, _), Couples), % 5
+    nextToLeft(couple(_, _, _, _, spaghetti, _), couple(_, _, laura, _, _, _), Couples), % 6
+    somewhereLeft(couple(white, _, _, _, _, _), couple(_, _, _, _, fettuccine, _), Couples), % 7
+    somewhereBetween(couple(pink, _, _, _, _, _), couple(_, barry, _, _, _, _), couple(_, andrew, _, _, _, _), Couples), % 8
+    atAnyEnd(couple(_, _, _, 2, _, _), Couples), % 9
+    member(couple(_, _, rose, _, rigatoni, _), Couples), % 10
+    nextTo(couple(_, andrew, _, _, _, _), couple(_, _, _, 5, _, _), Couples), % 11
+    somewhereLeft(couple(white, _, _, _, _, _), couple(_, _, _, _, _, spanish), Couples), % 12
+    nextTo(couple(_, _, _, _, spaghetti, _), couple(_, _, _, _, fettuccine, _), Couples), %13
+    Couples = [_, couple(_, _, _, _, lasagne, _), _, _, _], % 14
+    member(couple(pink, _, _, 6, _, _), Couples), % 15
+    somewhereLeft(couple(purple, _, _, _, _, _), couple(_, scott, _, _, _, _), Couples), % 16
+    atAnyEnd(couple(_, _, _, _, rigatoni, _), Couples), % 17
+    nextTo(couple(_, _, _, 4, _, _), couple(pink, _, _, _, _, _), Couples), % 18
+    somewhereBetween(couple(_, _, kristen, _, _, _), couple(_, _, _, _, _, spanish), couple(_, _, _, _, _, chilean), Couples), % 19
+    somewhereLeft(couple(_, _, _, _, _, italian), couple(_, _, _, 3, _, _), Couples), % 20
+    nextToLeft(couple(_, _, laura, _, _, _), couple(_, _, _, _, _, argentine), Couples), % 21
+    member(couple(_, jerry, _, _, _, _), Couples), % one boyfriend is called jerry
+    member(couple(blue, _, _, _, _, _), Couples), % one couple has a blue flower
+    member(couple(_, _, _, _, ravioli, _), Couples). % one couple eats ravioli
+     
+
+/*
+	Example:
+    couples(C).
+    C = [couple(pink, jerry, kristen, 6, ravioli, italian),
+    	couple(white, daniel, donna, 4, lasagne, french),
+        couple(purple, barry, ann, 3, spaghetti, spanish),
+        couple(blue, scott, laura, 5, fettuccine, chielan),
+        couple(red, andrew, rose, 2, rigatoni, argentine)].
+*/   
