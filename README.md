@@ -1,15 +1,14 @@
 # PrologZebraPuzzle
 
-# A solution for the bonus task at Functional and Logic Programming subject at university
-# I had to find the solution for the Zebra Puzzle using Prolog
+A solution for the bonus task at Functional and Logic Programming subject at university.
+I had to find the solution for the Zebra Puzzle using Prolog.
 
-# Task:
 # Date Night
-# Five couples are next to each other on a date night. 
-# Each couple is at a table that has a flower and they are eating pasta and drinking wine. 
-# Follow the clues to find out which wine they are drinking and which pasta they are eating.
+Five couples are next to each other on a date night. 
+Each couple is at a table that has a flower and they are eating pasta and drinking wine. 
+Follow the clues to find out which wine they are drinking and which pasta they are eating.
 
-/* 
+ 
 	1. The couple drinking French wine is exactly to the left of the 
     	couple who has been dating for 3 years.
 	2. At one of the ends is the table that has the Red flower.
@@ -41,4 +40,4 @@
 	20. The couple drinking Italian wine is somewhere to the left of the 
     	couple that has been dating for 3 years.
 	21. Laura is exactly to the left of the couple drinking Argentine wine.
-*/
+
